@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View, ScrollView } from 'react-native';
 
 export default function App() {
   const [enteredGoalText, setEnteredGoalText] = useState('');
@@ -27,14 +27,16 @@ export default function App() {
         />
       </View>
       <View style={styles.goalsContainer}>
-        {courseGoals.map(goal => (
-          // In iOS we need to wrap Text with View; that is not mandatory in Android.
-          <View
-            key={goal}
-            style={styles.goalItem}>
-            <Text style={styles.goalText}>{goal}</Text>
-          </View>
-        ))}
+        <ScrollView>
+          {courseGoals.map(goal => (
+            // In iOS we need to wrap Text with View; that is not mandatory in Android.
+            <View
+              key={goal}
+              style={styles.goalItem}>
+              <Text style={styles.goalText}>{goal}</Text>
+            </View>
+          ))}
+        </ScrollView>
       </View>
     </View>
   );
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
     margin: 8,
     padding: 8,
     borderRadius: 6,
-    backgroundColor: '#5e0acc',
+    backgroundColor: '#5e0acc'
   },
 
   goalText: {
