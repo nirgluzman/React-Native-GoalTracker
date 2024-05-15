@@ -18,6 +18,12 @@ export default function App() {
     ]);
   }
 
+  function deleteGoalHandler(id) {
+    setCourseGoals(currentCourseGoal => {
+      return currentCourseGoal.filter(goal => goal.id !== id);
+    });
+  }
+
   return (
     <View style={styles.appContainer}>
       <GoalInput onAddGoal={addGoalHandler} />
@@ -26,7 +32,13 @@ export default function App() {
         <FlatList
           data={courseGoals}
           renderItem={itemData => {
-            return <GoalItem text={itemData.item.text} />;
+            return (
+              <GoalItem
+                text={itemData.item.text}
+                id={itemData.item.id}
+                onDeleteItem={deleteGoalHandler}
+              />
+            );
           }}
           keyExtractor={(item, index) => {
             // tells the list to use 'id' for the react keys instead of the default 'key' property.
