@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View, ScrollView } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View, ScrollView, FlatList } from 'react-native';
 
 export default function App() {
   const [enteredGoalText, setEnteredGoalText] = useState('');
@@ -10,7 +10,14 @@ export default function App() {
   }
 
   function addGoalHandler() {
-    setCourseGoals(currentCourseGoal => [...currentCourseGoal, enteredGoalText]);
+    setCourseGoals(currentCourseGoal => [
+      ...currentCourseGoal,
+      {
+        text: enteredGoalText,
+        // key: Math.random().toString() // FlatList component is looking for 'key' property.
+        id: Math.random().toString() // we used here 'id' for the sake of example.
+      }
+    ]);
   }
 
   return (
@@ -27,16 +34,21 @@ export default function App() {
         />
       </View>
       <View style={styles.goalsContainer}>
-        <ScrollView>
-          {courseGoals.map(goal => (
-            // In iOS we need to wrap Text with View; that is not mandatory in Android.
-            <View
-              key={goal}
-              style={styles.goalItem}>
-              <Text style={styles.goalText}>{goal}</Text>
-            </View>
-          ))}
-        </ScrollView>
+        <FlatList
+          data={courseGoals}
+          renderItem={itemData => {
+            return (
+              // In iOS we need to wrap <Text> with <View> component; that's not mandatory in Android.
+              <View style={styles.goalItem}>
+                <Text style={styles.goalText}>{itemData.item.text}</Text>
+              </View>
+            );
+          }}
+          keyExtractor={(item, index) => {
+            // tells the list to use 'id' for the react keys instead of the default 'key' property.
+            return item.id;
+          }}
+        />
       </View>
     </View>
   );
